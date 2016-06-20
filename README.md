@@ -47,7 +47,7 @@ aiogithubauth.add_github_auth_middleware(
     github_id='[your github client id]',
     github_secret='[your github secret]',
     github_org='[your github org]',
-    cookie_key='a 16 char string',
+    cookie_key='some 32 character string',
     cookie_name='some_cookie_name'
 )
 ```
