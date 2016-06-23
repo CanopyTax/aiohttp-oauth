@@ -10,7 +10,7 @@ requires = [
 
 setup_options = dict(
     name='aiogithubauth',
-    version='0.0.0',
+    version='0.1.0',
     description='github auth middleware for aiohttp',
     long_description='See readme at https://github.com/CanopyTax/aiohttp-github-auth',
     author='nhumrich',

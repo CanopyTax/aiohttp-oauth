@@ -10,14 +10,28 @@ gh_secret = None
 gh_org = None
 
 
-def github_auth_middleware(*, github_id, github_secret, github_org):
-    """Middleware to do github auth
+def github_auth_middleware(*, github_id, github_secret, github_org,
+                           whitelist_handlers=None, redirect_handlers=None):
+    """ Middleware to do github auth
+    :param github_id: github client id
+    :param github_secret: github secret
+    :param github_org: github organization for which people are authorized
+    :param whitelist_handlers: a list of handler methods
+        which do not need authorization
+    :param redirect_handlers: a list of handler methods
+        which will cause an automatic redirect to login to github.
+        If empty, all handlers will redirect.
+        If provided, all other handlers will cause a 401 istead of a
+        redirect to github login
 
+    :return: middleware_factory
     """
     global gh_id, gh_secret, gh_org
     gh_id = github_id
     gh_secret = github_secret
     gh_org = github_org
+    whitelist_handlers = whitelist_handlers or []
+    redirect_handlers = redirect_handlers or []
 
     async def middleware_factory(app, handler):
 
@@ -27,11 +41,14 @@ def github_auth_middleware(*, github_id, github_secret, github_org):
             user = session.get('User')
             if user:  # already authenticated
                 pass
+            elif handler in whitelist_handlers:  # dont need authentication
+                pass
             elif handler == handle_github_callback and \
                     session.get('github_state'):
                 # Attempting to authenticate - let them pass through
                         pass
-            else:
+
+            elif handler in redirect_handlers or not redirect_handlers:
                 gh = GithubClient(
                     client_id=gh_id,
                     client_secret=gh_secret
@@ -43,6 +60,8 @@ def github_auth_middleware(*, github_id, github_secret, github_org):
                 session['github_state'] = state
                 session['desired_location'] = request.path
                 return web.HTTPFound(authorize_url)
+            else:
+                return web.HTTPUnauthorized()
 
             return await handler(request)
 
