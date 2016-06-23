@@ -11,18 +11,16 @@ gh_org = None
 
 
 def github_auth_middleware(*, github_id, github_secret, github_org,
-                           whitelist_handlers=None, redirect_handlers=None):
+                           whitelist_handlers=None, api_unauthorized=False):
     """ Middleware to do github auth
     :param github_id: github client id
     :param github_secret: github secret
     :param github_org: github organization for which people are authorized
     :param whitelist_handlers: a list of handler methods
         which do not need authorization
-    :param redirect_handlers: a list of handler methods
-        which will cause an automatic redirect to login to github.
-        If empty, all handlers will redirect.
-        If provided, all other handlers will cause a 401 istead of a
-        redirect to github login
+    :param api_unauthorized: if set to True, any call without authorization
+        made at a path of /api/* will return a 401 instead of
+        redirecting to github login
 
     :return: middleware_factory
     """
@@ -31,7 +29,6 @@ def github_auth_middleware(*, github_id, github_secret, github_org,
     gh_secret = github_secret
     gh_org = github_org
     whitelist_handlers = whitelist_handlers or []
-    redirect_handlers = redirect_handlers or []
 
     async def middleware_factory(app, handler):
 
@@ -48,7 +45,9 @@ def github_auth_middleware(*, github_id, github_secret, github_org,
                 # Attempting to authenticate - let them pass through
                         pass
 
-            elif handler in redirect_handlers or not redirect_handlers:
+            elif api_unauthorized and request.path.startswith('/api/'):
+                return web.HTTPUnauthorized()
+            else:
                 gh = GithubClient(
                     client_id=gh_id,
                     client_secret=gh_secret
@@ -60,8 +59,6 @@ def github_auth_middleware(*, github_id, github_secret, github_org,
                 session['github_state'] = state
                 session['desired_location'] = request.path
                 return web.HTTPFound(authorize_url)
-            else:
-                return web.HTTPUnauthorized()
 
             return await handler(request)
 
@@ -125,13 +122,13 @@ def add_github_auth_middleware(app,
         print('creating new cookie secret')
         cookie_key = os.urandom(16).hex()
 
-    app._middlewares = [
-           session_middleware(
-               EncryptedCookieStorage(cookie_key.encode(),
-                                      cookie_name=cookie_name,
-                                      max_age=7200)),  # two hours
-           github_auth_middleware(**kwargs)
-           ] + app._middlewares
+    app._middlewares = app._middlewares + [
+        session_middleware(
+            EncryptedCookieStorage(cookie_key.encode(),
+                                   cookie_name=cookie_name,
+                                   max_age=7200)),  # two hours
+        github_auth_middleware(**kwargs)
+    ]
 
     app.router.add_route('GET', '/oauth_callback/github',
                          handle_github_callback)
