@@ -23,12 +23,12 @@ During registration of your aiohttp app, just call the
 `add_github_auth_middleware` and everything will be set up for you.
 ```
 app = web.Application(loop=loop)
-    aiogithubauth.add_github_auth_middleware(
-        app,
-        github_id='[your github client id]',
-        github_secret='[your github secret]',
-        github_org='[your github org]'
-    )
+aiogithubauth.add_github_auth_middleware(
+    app,
+    github_id='[your github client id]',
+    github_secret='[your github secret]',
+    github_org='[your github org]'
+)
 ```    
 
 ### configure cookies
