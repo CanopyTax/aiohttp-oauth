@@ -5,7 +5,7 @@ Github auth middlewear for your aiohttp app
 
 ## installation
 
-```
+```bash
 pip install aiogithubauth
 ```
 
@@ -21,14 +21,14 @@ advanced setup.
 ### basic
 During registration of your aiohttp app, just call the 
 `add_github_auth_middleware` and everything will be set up for you.
-```
+```python
 app = web.Application(loop=loop)
-    aiogithubauth.add_github_auth_middleware(
-        app,
-        github_id='[your github client id]',
-        github_secret='[your github secret]',
-        github_org='[your github org]'
-    )
+aiogithubauth.add_github_auth_middleware(
+    app,
+    github_id='[your github client id]',
+    github_secret='[your github secret]',
+    github_org='[your github org]'
+)
 ```    
 
 ### configure cookies
@@ -37,7 +37,7 @@ If you would like to configure the cookies that this sets for your users
 you can do that by setting `cookie_key` and `cookie_name`
 
 for example:
-```
+```python
 import aiogithubauth
 
 
@@ -47,7 +47,7 @@ aiogithubauth.add_github_auth_middleware(
     github_id='[your github client id]',
     github_secret='[your github secret]',
     github_org='[your github org]',
-    cookie_key='a 16 char string',
+    cookie_key='some 32 character string',
     cookie_name='some_cookie_name'
 )
 ```
@@ -60,7 +60,7 @@ like to add it yourself you can add the githubauth middleware yourself. You
 will also need to add the handler for handling oauth callbacks.
 
 For example:
-```
+```python
 from aiohttp_session import session_middleware
 from aiohttp_session.cookie_storage import EncryptedCookieStorage
 from aiogithubauth import github_auth_middleware, handle_github_callback
