@@ -37,7 +37,7 @@ def github_auth_middleware(*, github_id, github_secret, github_org,
             params = urllib.parse.parse_qs(request.query_string)
             user = session.get('User')
             if user:  # already authenticated
-                pass
+                request['user'] = user
             elif handler in whitelist_handlers:  # dont need authentication
                 pass
             elif handler == handle_github_callback and \
