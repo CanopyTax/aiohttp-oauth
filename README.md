@@ -1,8 +1,7 @@
 # aiohttp-oauth
 
-Oauth middlewear for your aiohttp app. Allows you to require loging in to
+Oauth middleware for your aiohttp app. Allows you to require logging in to
 an oauth app in order to get to your app.
-
 
 ## installation
 
@@ -90,4 +89,4 @@ app = web.Application(loop=loop, middlewares=[
 Pull requests welcome.
 After cloning the repo you can run `python setup.py develop` to get
 python to always point to your development version of the library.
-Now start up your aiohttp server and your in business.
+Now start up your aiohttp server and you're in business.
