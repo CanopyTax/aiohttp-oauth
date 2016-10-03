@@ -9,15 +9,16 @@ requires = [
 ]
 
 setup_options = dict(
-    name='aiogithubauth',
-    version='0.3.0',
-    description='github auth middleware for aiohttp',
-    long_description='See readme at https://github.com/CanopyTax/aiohttp-github-auth',
+    name='aiohttp_oauth',
+    version='0.4.0',
+    description='oauth middleware for aiohttp',
+    long_description='See readme at '
+                     'https://github.com/CanopyTax/aiohttp-oauth',
     author='nhumrich',
     author_email='nick@humrich.us',
     packages=find_packages('.'),
-    package_dir={'aiogithubauth': 'aiogithubauth'},
-    url='https://github.com/CanopyTax/aiohttp-github-auth',
+    package_dir={'aiohttp_oauth': 'aiohttp_oauth'},
+    url='https://github.com/CanopyTax/aiohttp-oauth',
     install_requires=requires,
     license="Apache",
     classifiers=[

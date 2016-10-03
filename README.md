@@ -1,29 +1,29 @@
-# aiohttp-github-auth
+# aiohttp-oauth
 
-Github auth middlewear for your aiohttp app
+Oauth middlewear for your aiohttp app. Allows you to require loging in to
+an oauth app in order to get to your app.
 
 
 ## installation
 
 ```bash
-pip install aiogithubauth
+pip install aiohttp_oauth
 ```
 
 ## usage
 
-First, you need to create a github app. The callback url is
-your domain + `/oauth_callback/github`
+Currently, only github is supported.
 
-If you would like to change the callback url, you can do that with the
-advanced setup.
+First, you need to create a github app. The callback url is
+your domain + `/auth/oauth_callback`
 
 
 ### basic
 During registration of your aiohttp app, just call the 
-`add_github_auth_middleware` and everything will be set up for you.
+`add_oauth_middleware` and everything will be set up for you.
 ```python
 app = web.Application(loop=loop)
-aiogithubauth.add_github_auth_middleware(
+aiohttp_oauth.add_oauth_middleware(
     app,
     github_id='[your github client id]',
     github_secret='[your github secret]',
@@ -38,11 +38,11 @@ you can do that by setting `cookie_key` and `cookie_name`
 
 for example:
 ```python
-import aiogithubauth
+import aiohttp_oauth
 
 
 app = web.Application(loop=loop)
-aiogithubauth.add_github_auth_middleware(
+aiogithubauth.add_oauth_middleware(
     app,
     github_id='[your github client id]',
     github_secret='[your github secret]',
@@ -52,18 +52,24 @@ aiogithubauth.add_github_auth_middleware(
 )
 ```
 
+
+### Custom Oauth Handler
+You can create your own custom oauth handler. It must implement the interface
+of aiohttp_oauth.auth.OauthHandler.
+Instantiate the object, and pass it into `add_auth_middleware` as the `oauth_handler`
+parameter.
+
 ### advanced
 
 This middleware requires aiohttp_session middleware. 
-The `add_github_auth_middleware` method adds that for you. If you would instead
-like to add it yourself you can add the githubauth middleware yourself. You
-will also need to add the handler for handling oauth callbacks.
+The `add_oauth_middleware` method adds that for you. If you would instead
+like to add it yourself you can add the githubauth middleware yourself.
 
 For example:
 ```python
 from aiohttp_session import session_middleware
 from aiohttp_session.cookie_storage import EncryptedCookieStorage
-from aiogithubauth import github_auth_middleware, handle_github_callback
+from aiohttp_oauth import oauth_middleware
 
 
 app = web.Application(loop=loop, middlewares=[
@@ -71,12 +77,9 @@ app = web.Application(loop=loop, middlewares=[
            EncryptedCookieStorage(cookie_key.encode(),
                                   cookie_name=cookie_name,
                                   max_age=7200)),
-    github_auth_middleware(**kwargs),
+    oauth_middleware(**kwargs),
     # ... 
 ])
-
-app.router.add_route('GET', '/oauth_callback/github',
-                      handle_github_callback)
 # now add all your other handlers
 
 ```
