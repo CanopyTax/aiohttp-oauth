@@ -30,7 +30,7 @@ class GithubAuth(OauthHandler):
             client_id=self._id,
             client_secret=self._secret
         )
-        code = params.get('code', [None])[0]
+        code = params.get('code')
         if not code:
             raise BadAttemptError("No github code found. It's possible the "
                                   "session timed out while authenticating.")
