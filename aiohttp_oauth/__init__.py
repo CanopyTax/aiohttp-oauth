@@ -33,7 +33,7 @@ def oauth_middleware(*, auth_callback=None,
                 await auth_callback(user)
 
             location = session.pop('desired_location')
-            session['User'] = user
+            session['User'] = user.get('username')
             return web.HTTPFound(location)
 
         async def start_authentication(request, session):
