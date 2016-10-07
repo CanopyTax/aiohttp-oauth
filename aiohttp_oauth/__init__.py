@@ -65,7 +65,10 @@ def oauth_middleware(*, auth_callback=None,
             if final_handler in whitelist_handlers:  # dont need auth
                 return await handler(request)
 
-            if request.path == auth_url and \
+            # Somtimes there is an extra / somewhere, so we strip it out
+            path = request.path.replace('//', '/')
+
+            if path == auth_url and \
                     session.get('auth_state_id'):
                 """Attempting to authenticate"""
                 return await handle_oauth_callback(request, session)
