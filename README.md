@@ -1,24 +1,25 @@
 # aiohttp-oauth
 
-Oauth middleware for your aiohttp app. Allows you to require logging in to
-an oauth app in order to get to your app.
+OAuth middleware for your aiohttp app. Allows you to require logging in to
+an OAuth app in order to get to your app.
 
-## installation
+
+## Installation
 
 ```bash
 pip install aiohttp_oauth
 ```
 
-## usage
+## Usage
 
-Currently, only github is supported.
+Currently, only GitHub is supported.
 
-First, you need to create a github app. The callback url is
+First, you need to create a GitHub app. The callback url is
 your domain + `/auth/oauth_callback`
 
 
-### basic
-During registration of your aiohttp app, just call the 
+### Basics
+During the registration of your aiohttp app, just call the 
 `add_oauth_middleware` and everything will be set up for you.
 ```python
 app = web.Application(loop=loop)
@@ -30,12 +31,12 @@ aiohttp_oauth.add_oauth_middleware(
 )
 ```    
 
-### configure cookies
+### Configuring Cookies
 
-If you would like to configure the cookies that this sets for your users
-you can do that by setting `cookie_key` and `cookie_name`
+If you would like to configure the cookies that this sets for your users,
+you can do that by setting `cookie_key` and `cookie_name`.
 
-for example:
+Example:
 ```python
 import aiohttp_oauth
 
@@ -52,19 +53,19 @@ aiogithubauth.add_oauth_middleware(
 ```
 
 
-### Custom Oauth Handler
-You can create your own custom oauth handler. It must implement the interface
-of aiohttp_oauth.auth.OauthHandler.
+### Custom OAuth Handler
+You can create your own custom OAuth handler. It must implement the interface
+of `aiohttp_oauth.auth.OauthHandler`.
 Instantiate the object, and pass it into `add_auth_middleware` as the `oauth_handler`
 parameter.
 
-### advanced
+### Advanced
 
 This middleware requires aiohttp_session middleware. 
 The `add_oauth_middleware` method adds that for you. If you would instead
-like to add it yourself you can add the githubauth middleware yourself.
+like to add it yourself, you can add the githubauth middleware yourself.
 
-For example:
+Example:
 ```python
 from aiohttp_session import session_middleware
 from aiohttp_session.cookie_storage import EncryptedCookieStorage
@@ -86,7 +87,7 @@ app = web.Application(loop=loop, middlewares=[
 
 # Contributing
 
-Pull requests welcome.
+Pull requests are welcome.
 After cloning the repo you can run `python setup.py develop` to get
-python to always point to your development version of the library.
-Now start up your aiohttp server and you're in business.
+Python to always point to your development version of the library.
+Now start your aiohttp server and you are in business.
