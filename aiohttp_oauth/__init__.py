@@ -33,7 +33,7 @@ def oauth_middleware(*, auth_callback=None,
                 await auth_callback(user)
 
             location = session.pop('desired_location')
-            session['User'] = user.get('username')
+            session['User'] = user.get('username') or user
             return web.HTTPFound(location)
 
         async def start_authentication(request, session):
@@ -94,6 +94,11 @@ def _get_auth_handler(*, url, **kwargs):
         return github.GithubAuth(id=kwargs['github_id'],
                                  secret=kwargs['github_secret'],
                                  org=kwargs['github_org'])
+    if 'google_id' in kwargs:
+        from . import google
+        return google.GoogleOAuth(id=kwargs['google_id'],
+                                  secret=kwargs['google_secret'],
+                                  redirect_uri=kwargs['google_redirect_uri'])
     else:
         raise NotImplementedError('Either you didnt provide correct keyword'
                                   ' args or the Auth you desire '
