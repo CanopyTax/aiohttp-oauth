@@ -99,6 +99,11 @@ def _get_auth_handler(*, url, **kwargs):
         return google.GoogleOAuth(id=kwargs['google_id'],
                                   secret=kwargs['google_secret'],
                                   redirect_uri=kwargs['google_redirect_uri'])
+    if 'gsuite_id' in kwargs:
+        from . import gsuite
+        return gsuite.GSuiteOAuth(id=kwargs['gsuite_id'],
+                                  secret=kwargs['gsuite_secret'],
+                                  redirect_uri=kwargs['gsuite_redirect_uri'])
     else:
         raise NotImplementedError('Either you didnt provide correct keyword'
                                   ' args or the Auth you desire '
