@@ -33,7 +33,7 @@ class GoogleOAuth(OauthHandler):
         )
         code = params.get('code')
         if not code:
-            raise BadAttemptError("No github code found. It's possible the "
+            raise BadAttemptError("No google 'code' parameter found. It's possible the "
                                   "session timed out while authenticating.")
         otoken, _ = await gc.get_access_token(code,
                                               redirect_uri=self.redirect_uri)
