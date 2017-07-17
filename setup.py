@@ -10,7 +10,7 @@ requires = [
 
 setup_options = dict(
     name='aiohttp_oauth',
-    version='0.4.3',
+    version='0.5.0',
     description='oauth middleware for aiohttp',
     long_description='See readme at '
                      'https://github.com/CanopyTax/aiohttp-oauth',
