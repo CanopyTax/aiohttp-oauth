@@ -4,11 +4,12 @@ from .auth import OauthHandler, BadAttemptError
 
 
 class GoogleOAuth(OauthHandler):
-    def __init__(self, id, secret, redirect_uri):
+    def __init__(self, id, secret, redirect_uri, approved_domains):
         super().__init__()
         self._id = id
         self._secret = secret
         self.redirect_uri = redirect_uri
+        self.approved_domains = approved_domains
 
     def get_state_code(self, request):
         return request.GET.get('state')
@@ -44,4 +45,8 @@ class GoogleOAuth(OauthHandler):
             access_token=otoken
         )
         user, info = await client.user_info()
+        if self.approved_domains and info.get('domain') \
+                not in self.approved_domains:
+            raise BadAttemptError("This app does not allow users "
+                                  "outside of their organization.")
         return info

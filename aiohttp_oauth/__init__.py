@@ -96,9 +96,11 @@ def _get_auth_handler(*, url, **kwargs):
                                  org=kwargs['github_org'])
     if 'google_id' in kwargs:
         from . import google
-        return google.GoogleOAuth(id=kwargs['google_id'],
-                                  secret=kwargs['google_secret'],
-                                  redirect_uri=kwargs['google_redirect_uri'])
+        return google.GoogleOAuth(
+            id=kwargs['google_id'],
+            secret=kwargs['google_secret'],
+            redirect_uri=kwargs['google_redirect_uri'],
+            approved_domains=kwargs['google_approved_domains'])
     if 'gsuite_id' in kwargs:
         from . import gsuite
         return gsuite.GSuiteOAuth(id=kwargs['gsuite_id'],
