@@ -8,10 +8,15 @@ from aiohttp_session.cookie_storage import EncryptedCookieStorage
 from .auth import BadAttemptError
 
 
+async def default_auth_header_handler(request):
+    return None
+
+
 def oauth_middleware(*, auth_callback=None,
                      oauth_url='/auth/oauth_callback',
                      whitelist_handlers=None,
                      oauth_handler=None,
+                     auth_header_handler=default_auth_header_handler,
                      **kwargs):
     auth_url = oauth_url
     if oauth_handler is None:
@@ -53,9 +58,15 @@ def oauth_middleware(*, auth_callback=None,
             return web.HTTPFound(redirect_url)
 
         async def auth_handler(request):
+            """ The auth flow starts here in this method """
             session = await get_session(request)
 
-            user = session.get('User')
+            if request.headers['Authentication']:
+                user = await auth_header_handler(request)
+                if user is None:
+                    return web.HTTPUnauthorized()
+            else:
+                user = session.get('User')
 
             if user:  # already authenticated
                 request['user'] = user
