@@ -44,7 +44,7 @@ def oauth_middleware(*, auth_callback=None,
         async def start_authentication(request, session):
             state = str(uuid.uuid4())
             session['auth_state_id'] = state
-            session['desired_location'] = request.path
+            session['desired_location'] = request.path_qs
 
             try:
                 redirect_url = await oauth_handler.get_oauth_url(
