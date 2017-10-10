@@ -4,6 +4,7 @@ import os
 from aiohttp import web
 from aiohttp_session import get_session, session_middleware
 from aiohttp_session.cookie_storage import EncryptedCookieStorage
+from aiohttp.frozenlist import FrozenList
 
 from .auth import BadAttemptError
 
@@ -38,7 +39,7 @@ def oauth_middleware(*, auth_callback=None,
                 await auth_callback(user)
 
             location = session.pop('desired_location')
-            session['User'] = user.get('username') or user
+            session['User'] = user
             return web.HTTPFound(location)
 
         async def start_authentication(request, session):
@@ -61,7 +62,7 @@ def oauth_middleware(*, auth_callback=None,
             """ The auth flow starts here in this method """
             session = await get_session(request)
 
-            if request.headers['Authentication']:
+            if request.headers.get('Authorization'):
                 user = await auth_header_handler(request)
                 if user is None:
                     return web.HTTPUnauthorized()
@@ -134,11 +135,11 @@ def add_oauth_middleware(app,
         print('creating new cookie secret')
         cookie_key = os.urandom(16).hex()
 
-    app._middlewares = [
+    app._middlewares = FrozenList([
         session_middleware(
             EncryptedCookieStorage(cookie_key.encode(),
                                    cookie_name=cookie_name,
                                    secure=cookie_is_secure,
                                    max_age=7200)),  # two hours
         oauth_middleware(**kwargs)
-    ] + app._middlewares
+    ] + list(app._middlewares))
