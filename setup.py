@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 requires = [
     'aioauth-client',
     'cryptography',
-    'aiohttp',
+    'aiohttp>=3.4.0',
     'aiohttp_session'
 ]
 
