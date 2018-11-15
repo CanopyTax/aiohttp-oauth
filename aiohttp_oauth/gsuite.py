@@ -12,7 +12,7 @@ class GSuiteOAuth(OauthHandler):
         self.approved_customers = approved_customers
 
     def get_state_code(self, request):
-        return request.args.get('state', '')
+        return request.query.get('state', '')
 
     async def get_oauth_url(self, request, session, state):
         gc = GoogleClient(
@@ -26,7 +26,8 @@ class GSuiteOAuth(OauthHandler):
         return authorize_url
 
     async def handle_oauth_callback(self, request, session) -> dict:
-        params = request.args
+        params = request.query
+
 
         gc = GoogleClient(
             client_id=self._id,

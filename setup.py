@@ -5,7 +5,7 @@ requires = [
     'aioauth-client',
     'cryptography',
     'aiohttp>=3.4.0',
-    'aiohttp_session'
+    'aiohttp_session>=2.7.0'
 ]
 
 setup_options = dict(

@@ -11,7 +11,7 @@ class GithubAuth(OauthHandler):
         self.org = org
 
     def get_state_code(self, request):
-        return request.args.get('state', '')
+        return request.query.get('state', '')
 
     async def get_oauth_url(self, request, session, state):
         gh = GithubClient(
@@ -24,7 +24,7 @@ class GithubAuth(OauthHandler):
         return authorize_url
 
     async def handle_oauth_callback(self, request, session) -> dict:
-        params = request.args
+        params = request.query
 
         gh = GithubClient(
             client_id=self._id,
