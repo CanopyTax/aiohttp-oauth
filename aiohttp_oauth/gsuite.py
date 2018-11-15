@@ -28,6 +28,7 @@ class GSuiteOAuth(OauthHandler):
     async def handle_oauth_callback(self, request, session) -> dict:
         params = request.query
 
+
         gc = GoogleClient(
             client_id=self._id,
             client_secret=self._secret

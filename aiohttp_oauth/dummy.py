@@ -9,6 +9,7 @@ class DummyAuth(OauthHandler):
     def get_state_code(self, request):
         return request.query.get('state', '')
 
+
     async def get_oauth_url(self, request, session, state):
         return self._url + '?state={}'.format(state)
 
