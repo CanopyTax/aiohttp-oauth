@@ -118,8 +118,8 @@ def _get_auth_handler(*, url, **kwargs):
         return gsuite.GSuiteOAuth(id=kwargs['gsuite_id'],
                                   secret=kwargs['gsuite_secret'],
                                   redirect_uri=kwargs['gsuite_redirect_uri'],
-                                  approved_customers=kwargs[
-                                      'gsuite_approved_customers'])
+                                  google_org=kwargs[
+                                      'gsuite_org'])
     else:
         raise NotImplementedError('Either you didnt provide correct keyword'
                                   ' args or the Auth you desire '
