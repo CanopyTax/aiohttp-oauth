@@ -6,11 +6,12 @@ requires = [
     'cryptography',
     'aiohttp>=3.4.0',
     'aiohttp_session>=2.7.0'
+    'pyJWT'
 ]
 
 setup_options = dict(
     name='aiohttp_oauth',
-    version='0.8.0',
+    version='0.9.0',
     description='oauth middleware for aiohttp',
     long_description='See readme at '
                      'https://github.com/CanopyTax/aiohttp-oauth',
