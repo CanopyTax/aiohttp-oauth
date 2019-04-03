@@ -115,7 +115,7 @@ def _get_auth_handler(*, url, **kwargs):
             approved_domains=kwargs['google_approved_domains'])
     if 'gsuite_id' in kwargs:
         from . import gsuite
-        return gsuite.GSuiteOAuth(id=kwargs['gsuite_id'],
+        return gsuite.GSuiteOAuth(id_=kwargs['gsuite_id'],
                                   secret=kwargs['gsuite_secret'],
                                   redirect_uri=kwargs['gsuite_redirect_uri'],
                                   google_org=kwargs[
