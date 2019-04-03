@@ -12,7 +12,7 @@ pip install aiohttp_oauth
 
 ## Usage
 
-Currently, only GitHub is supported.
+Currently, only GitHub and GSuite is supported.
 
 First, you need to create a GitHub app. The callback url is
 your domain + `/auth/oauth_callback`
