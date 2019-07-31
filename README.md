@@ -42,7 +42,7 @@ import aiohttp_oauth
 
 
 app = web.Application(loop=loop)
-aiogithubauth.add_oauth_middleware(
+aiohttp_oauth.add_oauth_middleware(
     app,
     github_id='[your github client id]',
     github_secret='[your github secret]',
