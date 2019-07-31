@@ -31,6 +31,19 @@ aiohttp_oauth.add_oauth_middleware(
 )
 ```    
 
+Or, for gsuite instead of github, just pass these in instead
+
+```python
+app = web.Application(loop=loop)
+aiohttp_oauth.add_oauth_middleware(
+    app,
+    gsuite_id='[your gsuite api id]',
+    gsuite_secret='[your gsuite secret]',
+    gsuite_redirect_uri='[your gsuite redirect uri (where this lives)]'
+    gsuite_org='[organization a member must be apart of for auth to work]'
+)
+```    
+
 ### Configuring Cookies
 
 If you would like to configure the cookies that this sets for your users,
@@ -83,7 +96,6 @@ app = web.Application(loop=loop, middlewares=[
 # now add all your other handlers
 
 ```
-
 
 # Contributing
 
