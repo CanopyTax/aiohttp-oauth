@@ -5,9 +5,9 @@ from .auth import OauthHandler, BadAttemptError
 
 
 class GSuiteOAuth(OauthHandler):
-    def __init__(self, id, secret, redirect_uri, google_org):
+    def __init__(self, id_, secret, redirect_uri, google_org):
         super().__init__()
-        self._id = id
+        self._id = id_
         self._secret = secret
         self.org = google_org
         self.redirect_uri = redirect_uri
